@@ -8,10 +8,10 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>ewm-main-service</artifactId>
+    <artifactId>ewm-stats-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
-    <name>EWM Server</name>
+    <name>EWM Statistic</name>
 
     <properties>
         <java.version>11</java.version>
