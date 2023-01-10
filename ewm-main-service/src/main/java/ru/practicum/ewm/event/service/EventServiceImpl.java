@@ -179,7 +179,7 @@ public class EventServiceImpl implements EventService {
 
         for (ViewStats view : views) {
             Long id = Long.parseLong(view.getUri().split("/")[1]);
-            Long hits = view.getHits() == null ? 0l : view.getHits();
+            Long hits = view.getHits() == null ? 0L : view.getHits();
             eventMap.get(id).setViews(hits);
         }
     }

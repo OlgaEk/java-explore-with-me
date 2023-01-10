@@ -41,8 +41,8 @@ public class EventPublicController {
                                                   HttpServletRequest request) {
         log.info("Try to find events by user, searched text is {}, categories in {}, paid is {}, start after {} " +
                         "and before {}. And return {} (only available is {}) events from {}, sorted by {}." +
-                        "Request ip={},uri={}"
-                , text, categories, paid, rangeStart, rangeEnd, size, onlyAvailable, from, sort, request.getRemoteAddr(),
+                        "Request ip={},uri={}",
+                text, categories, paid, rangeStart, rangeEnd, size, onlyAvailable, from, sort, request.getRemoteAddr(),
                 request.getRequestURI());
         PageRequest pageRequest = PageRequest.of(from / size, size, Sort.by("eventDate").descending());
         return service.searchByUser(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, pageRequest, request);

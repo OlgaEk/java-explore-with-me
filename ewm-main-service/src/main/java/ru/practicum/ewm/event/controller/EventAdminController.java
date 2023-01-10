@@ -38,8 +38,8 @@ public class EventAdminController {
         if (users != null && users.size() == 1 && users.get(0) == 0) users = null;
         if (categories != null && categories.size() == 1 && categories.get(0) == 0) categories = null;
         log.info("Try to find events by admin, created by users with id in {}, states in {}, categories in {}, " +
-                        "start after {} and before {}. And return {} events from {}."
-                , users, states, categories, rangeStart, rangeEnd, size, from);
+                        "start after {} and before {}. And return {} events from {}.",
+                users, states, categories, rangeStart, rangeEnd, size, from);
         PageRequest pageRequest = PageRequest.of(from / size, size);
         return service.getByAdmin(users, states, categories, rangeStart, rangeEnd, pageRequest);
     }
