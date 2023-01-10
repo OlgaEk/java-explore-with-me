@@ -8,14 +8,14 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 @RequiredArgsConstructor
-public class EventIdExistValidator implements ConstraintValidator<EventIdExist,Long> {
+public class EventIdExistValidator implements ConstraintValidator<EventIdExist, Long> {
     private final EventRepository repository;
 
     @Override
-    public boolean isValid(Long eventId, ConstraintValidatorContext cxt){
-        if(eventId == null) return false;
-        if(repository.findById(eventId).isEmpty())
-            throw new NoEntityException("Event with id = "+ eventId + " is not found");
+    public boolean isValid(Long eventId, ConstraintValidatorContext cxt) {
+        if (eventId == null) return false;
+        if (repository.findById(eventId).isEmpty())
+            throw new NoEntityException("Event with id = " + eventId + " is not found");
         return true;
     }
 }

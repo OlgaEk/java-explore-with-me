@@ -18,8 +18,6 @@ public class Compilation {
     private String title;
     private Boolean pinned;
 
-    //https://www.baeldung.com/jpa-many-to-many
-    // https://stackoverflow.com/questions/5478328/in-which-case-do-you-use-the-jpa-jointable-annotation
     @ManyToMany
     @JoinTable(
             name = "events_compilations",

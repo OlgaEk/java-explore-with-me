@@ -9,7 +9,7 @@ import ru.practicum.ewm.user.model.mapper.UserMapper;
 
 import java.util.List;
 
-@Mapper (componentModel = "spring", uses = {CategoryMapper.class, CategoryService.class, UserMapper.class})
+@Mapper(componentModel = "spring", uses = {CategoryMapper.class, CategoryService.class, UserMapper.class})
 public interface EventMapper {
     @Mapping(target = "category", source = "category")
     @Mapping(target = "lat", source = "location.lat")
@@ -17,14 +17,13 @@ public interface EventMapper {
     Event fullDtoToEvent(NewEventDto eventDto);
 
     List<EventShortDto> eventToShortDto(List<Event> events);
+
     List<EventFullDto> eventToFullDto(List<Event> events);
 
-    @Mapping(target = "location.lat",source = "lat")
+    @Mapping(target = "location.lat", source = "lat")
     @Mapping(target = "location.lon", source = "lon")
-    EventFullDto eventToFullDto (Event event);
+    EventFullDto eventToFullDto(Event event);
 
-    //https://mapstruct.org/documentation/stable/reference/html/#mapping-result-for-null-properties
-    //https://mapstruct.org/documentation/stable/reference/html/#updating-bean-instances
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateEventFromDto(UpdateEventRequest dto, @MappingTarget Event event);

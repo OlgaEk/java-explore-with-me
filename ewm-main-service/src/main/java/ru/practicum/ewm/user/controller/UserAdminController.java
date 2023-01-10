@@ -21,24 +21,24 @@ public class UserAdminController {
     private final UserService service;
 
     @PostMapping
-    public User createUser(@Validated @RequestBody NewUserRequest user){
+    public User createUser(@Validated @RequestBody NewUserRequest user) {
         log.info("Try to create user. User name:{}", user.getName());
-        return  service.create(user);
+        return service.create(user);
     }
 
     @GetMapping
     public List<User> getUsers(@RequestParam(name = "ids", required = false) List<Long> ids,
                                @RequestParam(name = "from", defaultValue = "0") int from,
-                               @RequestParam(name = "size", defaultValue = "10") int size){
-        log.info("Try to get users. Users ids : {}. And return a {} users from {}.",ids,size,from);
+                               @RequestParam(name = "size", defaultValue = "10") int size) {
+        log.info("Try to get users. Users ids : {}. And return a {} users from {}.", ids, size, from);
         PageRequest pageRequest = PageRequest.of(from / size, size);
-        return service.get(ids,pageRequest);
+        return service.get(ids, pageRequest);
 
     }
 
     @DeleteMapping("/{userId}")
-    public void deleteUser(@PathVariable @UserIdExist Long userId){
-        log.info("Try to delete user with id = {}",userId);
+    public void deleteUser(@PathVariable @UserIdExist Long userId) {
+        log.info("Try to delete user with id = {}", userId);
         service.delete(userId);
 
     }

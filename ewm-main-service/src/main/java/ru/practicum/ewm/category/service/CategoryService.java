@@ -8,10 +8,14 @@ import ru.practicum.ewm.category.model.dto.CategoryUpdateInput;
 import java.util.List;
 
 public interface CategoryService {
-    Category create (CategoryInput categoryInput);
-    Category update (CategoryUpdateInput category);
+    Category create(CategoryInput categoryInput);
+
+    Category update(CategoryUpdateInput category);
+
     void delete(Long catId);
+
     List<Category> getAll(Pageable pageable);
+
     Category getById(Long catId);
 
 

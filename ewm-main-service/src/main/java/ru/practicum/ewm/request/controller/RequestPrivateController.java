@@ -23,20 +23,20 @@ public class RequestPrivateController {
 
     @PostMapping
     public ParticipationRequestDto createRequest(@PathVariable @UserIdExist Long userId,
-                                                 @RequestParam @EventIdExist Long eventId){
-        log.info("Try to create request to event with id ={} by user with id = {} ",eventId, userId);
+                                                 @RequestParam @EventIdExist Long eventId) {
+        log.info("Try to create request to event with id ={} by user with id = {} ", eventId, userId);
         return service.create(userId, eventId);
     }
 
     @GetMapping
-    public List<ParticipationRequestDto> getRequest(@PathVariable @UserIdExist Long userId){
+    public List<ParticipationRequestDto> getRequest(@PathVariable @UserIdExist Long userId) {
         log.info("Try to get all request made by user with id = {}", userId);
         return service.getByUser(userId);
     }
 
     @PatchMapping("{requestId}/cancel")
     public ParticipationRequestDto cancelRequest(@PathVariable @UserIdExist Long userId,
-                                                 @PathVariable @RequestIdExist Long requestId){
+                                                 @PathVariable @RequestIdExist Long requestId) {
         log.info("Try to cancel request with id = {} by user with id ={}", requestId, userId);
         return service.cancel(userId, requestId);
     }

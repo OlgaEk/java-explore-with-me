@@ -8,12 +8,12 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.Map;
 
-import static org.springframework.http.HttpMethod.GET;
-
 public class HttpClient {
     private final RestTemplate rest;
 
-    public HttpClient(RestTemplate rest) {this.rest = rest; }
+    public HttpClient(RestTemplate rest) {
+        this.rest = rest;
+    }
 
     private static ResponseEntity<Object> prepareGatewayResponse(ResponseEntity<Object> response) {
         if (response.getStatusCode().is2xxSuccessful()) {

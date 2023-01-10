@@ -7,7 +7,9 @@ import ru.practicum.ewm.user.model.dto.NewUserRequest;
 import java.util.List;
 
 public interface UserService {
-    User create (NewUserRequest user);
-    List<User> get (List<Long> ids, Pageable pageable);
-    void delete (Long id);
+    User create(NewUserRequest user);
+
+    List<User> get(List<Long> ids, Pageable pageable);
+
+    void delete(Long id);
 }

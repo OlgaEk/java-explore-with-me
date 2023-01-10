@@ -1,8 +1,5 @@
 package ru.practicum.ewm.category.validator;
 
-import ru.practicum.ewm.category.model.Category;
-import ru.practicum.ewm.user.validator.UserIdExistValidator;
-
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;

@@ -39,22 +39,22 @@ public class CompilationAdminController {
 
     @DeleteMapping("/{compId}/events/{eventId}")
     public void deleteEventFromCompilation(@PathVariable @CompIdExist Long compId,
-                                           @PathVariable @EventIdExist Long eventId){
-        log.info("Try to delete event with id = {}, from compilation with id = {}", eventId,compId);
+                                           @PathVariable @EventIdExist Long eventId) {
+        log.info("Try to delete event with id = {}, from compilation with id = {}", eventId, compId);
         service.deleteEvent(compId, eventId);
     }
 
     @PatchMapping("/{compId}/pin")
-    public void pinnedCompilation (@PathVariable @CompIdExist Long compId){
+    public void pinnedCompilation(@PathVariable @CompIdExist Long compId) {
         log.info("Try to pin compilation with id = {}", compId);
-        service.pin(compId,true);
+        service.pin(compId, true);
 
     }
 
-    @DeleteMapping ("/{compId}/pin")
-    public void unPinnedCompilation (@PathVariable @CompIdExist Long compId){
+    @DeleteMapping("/{compId}/pin")
+    public void unPinnedCompilation(@PathVariable @CompIdExist Long compId) {
         log.info("Try to unpin compilation with id = {}", compId);
-        service.pin(compId,false);
+        service.pin(compId, false);
     }
 
 }

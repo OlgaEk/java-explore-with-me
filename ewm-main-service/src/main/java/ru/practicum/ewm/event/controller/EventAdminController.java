@@ -35,8 +35,8 @@ public class EventAdminController {
                                               @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime rangeEnd,
                                               @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero int from,
                                               @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
-        if (users!= null && users.size()==1 && users.get(0)==0) users = null;
-        if (categories!= null && categories.size()==1 && categories.get(0)==0) categories = null;
+        if (users != null && users.size() == 1 && users.get(0) == 0) users = null;
+        if (categories != null && categories.size() == 1 && categories.get(0) == 0) categories = null;
         log.info("Try to find events by admin, created by users with id in {}, states in {}, categories in {}, " +
                         "start after {} and before {}. And return {} events from {}."
                 , users, states, categories, rangeStart, rangeEnd, size, from);
@@ -46,20 +46,20 @@ public class EventAdminController {
 
     @PutMapping("/{eventId}")
     public EventFullDto updateEventByAdmin(@PathVariable @EventIdExist Long eventId,
-                                           @RequestBody AdminUpdateEventRequest eventDto){
+                                           @RequestBody AdminUpdateEventRequest eventDto) {
         log.info("Try to update event with id = {} by admin", eventId);
-        return service.updateByAdmin(eventId,eventDto);
+        return service.updateByAdmin(eventId, eventDto);
     }
 
     @PatchMapping("/{eventId}/publish")
-    public EventFullDto publishEvent(@PathVariable @EventIdExist Long eventId){
+    public EventFullDto publishEvent(@PathVariable @EventIdExist Long eventId) {
         log.info("Try to publish event with id = {}", eventId);
         return service.publish(eventId);
     }
 
     @PatchMapping("{eventId}/reject")
-    public EventFullDto rejectEvent(@PathVariable @EventIdExist Long eventId){
-        log.info("Try to reject event with id = {}",eventId);
+    public EventFullDto rejectEvent(@PathVariable @EventIdExist Long eventId) {
+        log.info("Try to reject event with id = {}", eventId);
         return service.reject(eventId);
     }
 }

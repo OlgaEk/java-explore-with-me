@@ -29,15 +29,16 @@ public class RequestEventPrivateController {
 
     @PatchMapping("/{reqId}/confirm")
     public ParticipationRequestDto confirmEvent(@PathVariable @UserIdExist Long userId,
-                                           @PathVariable @EventIdExist Long eventId,
-                                           @PathVariable @RequestIdExist Long reqId) {
+                                                @PathVariable @EventIdExist Long eventId,
+                                                @PathVariable @RequestIdExist Long reqId) {
         log.info("Try to confirm request with id={} in event with id={}, by user with id = {}", reqId, eventId, userId);
         return service.confirm(userId, eventId, reqId);
     }
+
     @PatchMapping("/{reqId}/reject")
     public ParticipationRequestDto rejectEvent(@PathVariable @UserIdExist Long userId,
-                                          @PathVariable @EventIdExist Long eventId,
-                                          @PathVariable @RequestIdExist Long reqId){
+                                               @PathVariable @EventIdExist Long eventId,
+                                               @PathVariable @RequestIdExist Long reqId) {
         log.info("Try to reject request with id={} in event with id={}, by user with id = {}", reqId, eventId, userId);
         return service.reject(userId, eventId, reqId);
     }

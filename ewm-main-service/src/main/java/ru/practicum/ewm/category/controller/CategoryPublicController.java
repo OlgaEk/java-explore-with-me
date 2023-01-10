@@ -20,15 +20,15 @@ public class CategoryPublicController {
     private final CategoryService service;
 
     @GetMapping
-    List<Category> getCategories(@RequestParam(name = "from",defaultValue = "0") int from,
-                               @RequestParam(name="size", defaultValue = "10") int size){
-        log.info("Try to get {} categories from {}",size,from);
-        PageRequest pageRequest = PageRequest.of(from/size,size);
+    List<Category> getCategories(@RequestParam(name = "from", defaultValue = "0") int from,
+                                 @RequestParam(name = "size", defaultValue = "10") int size) {
+        log.info("Try to get {} categories from {}", size, from);
+        PageRequest pageRequest = PageRequest.of(from / size, size);
         return service.getAll(pageRequest);
     }
 
     @GetMapping("/{catId}")
-    Category getCategory(@PathVariable @CategoryIdExist Long catId){
+    Category getCategory(@PathVariable @CategoryIdExist Long catId) {
         log.info("Try to get category by id = {}", catId);
         return service.getById(catId);
 

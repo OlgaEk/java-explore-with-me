@@ -17,65 +17,63 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CompilationServiceImpl implements CompilationService{
+public class CompilationServiceImpl implements CompilationService {
     private final CompilationRepository compilationRepository;
     private final CompilationMapper mapper;
     private final EventRepository eventRepository;
 
-    public CompilationDto create(NewCompilationDto compDto){
+    public CompilationDto create(NewCompilationDto compDto) {
         return mapper.compilationToDto(compilationRepository.save(mapper.dtoToCompilation(compDto)));
     }
 
-    public void delete(Long compId){
+    public void delete(Long compId) {
         Compilation comp = compilationRepository.findById(compId)
-                        .orElseThrow(()-> new NoEntityException("Event with id = "+ compId + " is not found"));
+                .orElseThrow(() -> new NoEntityException("Event with id = " + compId + " is not found"));
         compilationRepository.delete(comp);
     }
 
-    public List<CompilationDto> get (Boolean pinned, Pageable pageable){
-        return mapper.compilationToDto(compilationRepository.findAllByPinned(pinned,pageable));
+    public List<CompilationDto> get(Boolean pinned, Pageable pageable) {
+        return mapper.compilationToDto(compilationRepository.findAllByPinned(pinned, pageable));
     }
 
-    public CompilationDto getById (Long compId){
+    public CompilationDto getById(Long compId) {
         Compilation comp = compilationRepository.findById(compId)
-                .orElseThrow(()-> new NoEntityException("Event with id = "+ compId + " is not found"));
+                .orElseThrow(() -> new NoEntityException("Event with id = " + compId + " is not found"));
         return mapper.compilationToDto(comp);
     }
 
-    public void addEvent (Long compId, Long eventId){
+    public void addEvent(Long compId, Long eventId) {
         Compilation comp = compilationRepository.findById(compId)
-                .orElseThrow(()-> new NoEntityException("Event with id = "+ compId + " is not found"));
+                .orElseThrow(() -> new NoEntityException("Event with id = " + compId + " is not found"));
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(()->new NoEntityException("Event with id = "+eventId+" was not found"));
+                .orElseThrow(() -> new NoEntityException("Event with id = " + eventId + " was not found"));
         List<Event> events = comp.getEvents();
-        if(events.contains(event))
-            throw new ForbiddenException("Event with id = " + eventId + " already in compilation with id = "+compId);
+        if (events.contains(event))
+            throw new ForbiddenException("Event with id = " + eventId + " already in compilation with id = " + compId);
         events.add(event);
         comp.setEvents(events);
         compilationRepository.save(comp);
     }
 
-    public void deleteEvent (Long compId, Long eventId){
+    public void deleteEvent(Long compId, Long eventId) {
         Compilation comp = compilationRepository.findById(compId)
-                .orElseThrow(()-> new NoEntityException("Event with id = "+ compId + " is not found"));
+                .orElseThrow(() -> new NoEntityException("Event with id = " + compId + " is not found"));
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(()->new NoEntityException("Event with id = "+eventId+" was not found"));
+                .orElseThrow(() -> new NoEntityException("Event with id = " + eventId + " was not found"));
         List<Event> events = comp.getEvents();
-        if(!events.contains(event))
-            throw new ForbiddenException("Event with id = " + eventId + " not in compilation with id = "+compId);
+        if (!events.contains(event))
+            throw new ForbiddenException("Event with id = " + eventId + " not in compilation with id = " + compId);
         events.remove(event);
         comp.setEvents(events);
         compilationRepository.save(comp);
     }
 
-    public void pin(Long compId, Boolean pinned){
+    public void pin(Long compId, Boolean pinned) {
         Compilation comp = compilationRepository.findById(compId)
-                .orElseThrow(()-> new NoEntityException("Event with id = "+ compId + " is not found"));
+                .orElseThrow(() -> new NoEntityException("Event with id = " + compId + " is not found"));
         comp.setPinned(pinned);
         compilationRepository.save(comp);
     }
-
-
 
 
 }

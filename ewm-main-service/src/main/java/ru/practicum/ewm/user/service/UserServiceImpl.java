@@ -16,15 +16,15 @@ public class UserServiceImpl implements UserService {
     private final UserRepository repository;
     private final UserMapper mapper;
 
-    public User create (NewUserRequest newUserRequest){
+    public User create(NewUserRequest newUserRequest) {
         return repository.save(mapper.userInputToUser(newUserRequest));
     }
 
-    public List<User> get (List<Long> ids, Pageable pageable){
-        return ids==null ? repository.findAll(pageable).getContent() : repository.findAllByIdIn(ids,pageable);
+    public List<User> get(List<Long> ids, Pageable pageable) {
+        return ids == null ? repository.findAll(pageable).getContent() : repository.findAllByIdIn(ids, pageable);
     }
 
-    public void delete( Long id){
+    public void delete(Long id) {
         repository.deleteById(id);
     }
 

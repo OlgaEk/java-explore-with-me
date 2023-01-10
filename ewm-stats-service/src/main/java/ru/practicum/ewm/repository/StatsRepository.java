@@ -23,5 +23,5 @@ public interface StatsRepository extends JpaRepository<Stats, Long> {
             "and ((:uris) is null or s.uri in (:uris)) " +
             "group by s.uri, s.app")
     List<ViewStats> searchHitUnique(@Param("uris") Collection<String> uris, @Param("start") LocalDateTime timestamp,
-                              @Param("end") LocalDateTime timestamp1);
+                                    @Param("end") LocalDateTime timestamp1);
 }

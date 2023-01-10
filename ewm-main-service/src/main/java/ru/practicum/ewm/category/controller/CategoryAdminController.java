@@ -18,21 +18,21 @@ public class CategoryAdminController {
     private final CategoryService service;
 
     @PostMapping
-    public Category createCategory(@Validated @RequestBody CategoryInput categoryInput){
+    public Category createCategory(@Validated @RequestBody CategoryInput categoryInput) {
         log.info("Try to create new category with name= {}", categoryInput.getName());
         return service.create(categoryInput);
     }
 
     @PatchMapping
-    public Category updateCategory (@Validated @RequestBody CategoryUpdateInput categoryUpdateInput){
+    public Category updateCategory(@Validated @RequestBody CategoryUpdateInput categoryUpdateInput) {
         log.info("Try to update category with id={}, and new name = {}",
-                categoryUpdateInput.getId(),categoryUpdateInput.getName());
+                categoryUpdateInput.getId(), categoryUpdateInput.getName());
         return service.update(categoryUpdateInput);
 
     }
 
     @DeleteMapping("/{catId}")
-    public void deleteCategory (@PathVariable @CategoryIdExist Long catId){
+    public void deleteCategory(@PathVariable @CategoryIdExist Long catId) {
         log.info("Try to delete category with id = {}", catId);
         service.delete(catId);
     }

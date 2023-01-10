@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.ewm.event.model.Event;
 import ru.practicum.ewm.request.model.Participation;
 import ru.practicum.ewm.request.model.RequestStatus;
 
@@ -14,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface RequestRepository extends JpaRepository <Participation, Long> {
+public interface RequestRepository extends JpaRepository<Participation, Long> {
     Optional<Participation> findByEventIdAndRequesterId(Long eventId, Long userId);
 
     List<Participation> findAllByRequesterId(Long userId);

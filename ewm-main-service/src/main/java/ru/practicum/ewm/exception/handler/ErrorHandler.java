@@ -11,16 +11,16 @@ import org.springframework.web.context.request.WebRequest;
 import ru.practicum.ewm.exception.ForbiddenException;
 import ru.practicum.ewm.exception.NoEntityException;
 
-
 import javax.validation.ConstraintViolationException;
 import java.util.List;
+
 @Slf4j
 @RestControllerAdvice
 public class ErrorHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleDataIntegrityViolation(final  DataIntegrityViolationException e, WebRequest request){
+    public ErrorResponse handleDataIntegrityViolation(final DataIntegrityViolationException e, WebRequest request) {
         log.info("Error to create entity with not unique parameters.");
         return ErrorResponse.builder()
                 .errors(List.of(e.getClass().getName()))
@@ -71,7 +71,7 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ErrorResponse handleForbiddenException (final ForbiddenException e) {
+    public ErrorResponse handleForbiddenException(final ForbiddenException e) {
         log.error("Forbidden to execute. Error:{}. ", e.getMessage());
         return ErrorResponse.builder()
                 .errors(List.of(e.getClass().getName()))
@@ -80,10 +80,14 @@ public class ErrorHandler {
                 .message(e.getLocalizedMessage())
                 .build();
     }
-
+//При обработке в handler Throwable ошибок , все кастомные валидаторы начинают выдавать 500 ошибку
+// Оказывается если в кастомном валидаторе пробросить исключение, то в дальнейшем это вызовет еще одно
+// исключение обработчика валидаторов(то что валидатор завершился не по плану). И он, как я понимаю в стеке
+// исключений становится последним и handler обрабатывает его, как Throwable.
+// Пока, если 500 ошибка необходима, то я исключу все кастомные валидаторы(((
     /*@ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleInternalError (final Exception e, WebRequest request){
+    public ErrorResponse handleInternalError (final Throwable e, WebRequest request){
         log.error("Server error");
         return ErrorResponse.builder()
                 .errors(List.of(e.getClass().getName()))

@@ -8,10 +8,16 @@ import java.util.List;
 
 public interface CompilationService {
     CompilationDto create(NewCompilationDto compDto);
+
     void delete(Long compId);
-    List<CompilationDto> get (Boolean pinned, Pageable pageable);
-    CompilationDto getById (Long compId);
-    void addEvent (Long compId, Long eventId);
-    void deleteEvent (Long compId, Long eventId);
+
+    List<CompilationDto> get(Boolean pinned, Pageable pageable);
+
+    CompilationDto getById(Long compId);
+
+    void addEvent(Long compId, Long eventId);
+
+    void deleteEvent(Long compId, Long eventId);
+
     void pin(Long compId, Boolean pinned);
 }

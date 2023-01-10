@@ -24,7 +24,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -130,13 +129,13 @@ public class EventServiceImpl implements EventService {
         rangeStart = rangeStart != null ? rangeStart : LocalDateTime.now();
         List<Event> events = eventRepository.searchEventsForUser(EventState.PUBLISHED, text, categories,
                 paid, rangeStart, rangeEnd, pageable);
-        if(onlyAvailable)
+        if (onlyAvailable)
             events = events.stream()
-                    .filter(e->e.getParticipantLimit()==0 || e.getConfirmedRequests() < e.getParticipantLimit())
+                    .filter(e -> e.getParticipantLimit() == 0 || e.getConfirmedRequests() < e.getParticipantLimit())
                     .collect(Collectors.toList());
         hitToStats(request);
         setViews(events);
-        if(sort !=null && sort.equals(SortEvents.VIEWS))
+        if (sort != null && sort.equals(SortEvents.VIEWS))
             events = events.stream().sorted(Comparator.comparing(Event::getViews)).collect(Collectors.toList());
         return mapper.eventToShortDto(events);
     }
@@ -165,22 +164,22 @@ public class EventServiceImpl implements EventService {
         statsClient.hit(endpointHit);
     }
 
-    private void setViews(List<Event> events){
-        String start = LocalDateTime.of(1900,1,1,1,1,1)
+    private void setViews(List<Event> events) {
+        String start = LocalDateTime.of(1900, 1, 1, 1, 1, 1)
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String end = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        Map<Long, Event> eventMap =new HashMap<>();
-        events.forEach(e->eventMap.put(e.getId(),e));
+        Map<Long, Event> eventMap = new HashMap<>();
+        events.forEach(e -> eventMap.put(e.getId(), e));
         List<String> uris = events.stream()
                 .map(Event::getId)
-                .map(id->"/events/"+id)
+                .map(id -> "/events/" + id)
                 .collect(Collectors.toList());
-        ResponseEntity<Object> response =  statsClient.get(start,end,uris,false);
-        List<ViewStats> views = (List<ViewStats>)response.getBody();
+        ResponseEntity<Object> response = statsClient.get(start, end, uris, false);
+        List<ViewStats> views = (List<ViewStats>) response.getBody();
 
-        for(ViewStats view : views) {
+        for (ViewStats view : views) {
             Long id = Long.parseLong(view.getUri().split("/")[1]);
-            Long hits = view.getHits() == null ? 0l:view.getHits();
+            Long hits = view.getHits() == null ? 0l : view.getHits();
             eventMap.get(id).setViews(hits);
         }
     }

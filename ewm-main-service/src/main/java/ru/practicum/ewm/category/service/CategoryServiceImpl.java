@@ -14,32 +14,32 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CategoryServiceImpl implements CategoryService{
+public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository repository;
     private final CategoryMapper mapper;
 
-    public Category create (CategoryInput categoryInput){
+    public Category create(CategoryInput categoryInput) {
         return repository.save(mapper.inputToCategory(categoryInput));
     }
 
-    public Category update (CategoryUpdateInput category){
-        return repository.save(mapper.updateInputToCategory(category)) ;
+    public Category update(CategoryUpdateInput category) {
+        return repository.save(mapper.updateInputToCategory(category));
     }
 
-    public void delete(Long catId){
+    public void delete(Long catId) {
         //Поиск событий привязанных к категории
         Category category = repository.findById(catId)
-                .orElseThrow(()->new NoEntityException("Category with id =" + catId + " was not found"));
+                .orElseThrow(() -> new NoEntityException("Category with id =" + catId + " was not found"));
         repository.delete(category);
     }
 
-    public List<Category> getAll(Pageable pageable){
+    public List<Category> getAll(Pageable pageable) {
         return repository.findAll(pageable).getContent();
     }
 
-    public Category getById(Long catId){
+    public Category getById(Long catId) {
         return repository.findById(catId)
-                .orElseThrow( ()-> new NoEntityException("Category with id =" + catId + " was not found"));
+                .orElseThrow(() -> new NoEntityException("Category with id =" + catId + " was not found"));
     }
 
 

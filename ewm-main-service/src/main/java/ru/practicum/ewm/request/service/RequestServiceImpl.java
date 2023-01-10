@@ -44,7 +44,7 @@ public class RequestServiceImpl implements RequestService {
         Participation request = newRequest(eventId, userId);
         if (!event.getRequestModeration()) confirmRequestToEvent(request);
         //??если для события лимит заявок равен 0 или отключена пре-модерация заявок, то подтверждение заявок не требуется
-        if (event.getParticipantLimit()==0) confirmRequestToEvent(request);
+        if (event.getParticipantLimit() == 0) confirmRequestToEvent(request);
         return mapper.requestToDto(requestRepository.save(request));
     }
 
@@ -58,12 +58,12 @@ public class RequestServiceImpl implements RequestService {
         if (!request.getRequester().getId().equals(userId))
             throw new ForbiddenException("User with id = " + userId +
                     " is not allowed to cancel request with id = " + requestId);
-        if(request.getStatus().equals(RequestStatus.CONFIRMED)) cancelConfirmedRequestToEvent(request);
+        if (request.getStatus().equals(RequestStatus.CONFIRMED)) cancelConfirmedRequestToEvent(request);
         else request.setStatus(RequestStatus.CANCELED);
         return mapper.requestToDto(requestRepository.save(request));
     }
 
-    public List<ParticipationRequestDto> getForUsersEvent(Long userId, Long eventId){
+    public List<ParticipationRequestDto> getForUsersEvent(Long userId, Long eventId) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NoEntityException("Event with id = " + eventId + " was not found"));
         if (!event.getInitiator().getId().equals(userId))
@@ -72,7 +72,7 @@ public class RequestServiceImpl implements RequestService {
         return mapper.requestToDto(requestRepository.findAllByEventId(eventId));
     }
 
-    public ParticipationRequestDto confirm(Long userId, Long eventId, Long reqId){
+    public ParticipationRequestDto confirm(Long userId, Long eventId, Long reqId) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NoEntityException("Event with id = " + eventId + " was not found"));
         if (!event.getInitiator().getId().equals(userId))
@@ -80,21 +80,21 @@ public class RequestServiceImpl implements RequestService {
                     + " not allowed to confirm request for event with id =" + eventId);
         Participation request = requestRepository.findById(reqId)
                 .orElseThrow(() -> new NoEntityException("Request with id = " + reqId + " was not found"));
-        if(!request.getEvent().getId().equals(eventId))
-            throw new ForbiddenException("Request with id="+reqId+"not for event with id="+eventId);
-        if(request.getStatus().equals(RequestStatus.CONFIRMED))
-            throw new ForbiddenException("Request with id = "+reqId+"already confirmed");
-        if(!request.getStatus().equals(RequestStatus.PENDING))
-            throw new ForbiddenException("Request with id = "+reqId+"not pending to confirm");
-        if(event.getConfirmedRequests()>=event.getParticipantLimit())
-            throw new ForbiddenException("Reached limit to confirmed request to event with id="+eventId);
+        if (!request.getEvent().getId().equals(eventId))
+            throw new ForbiddenException("Request with id=" + reqId + "not for event with id=" + eventId);
+        if (request.getStatus().equals(RequestStatus.CONFIRMED))
+            throw new ForbiddenException("Request with id = " + reqId + "already confirmed");
+        if (!request.getStatus().equals(RequestStatus.PENDING))
+            throw new ForbiddenException("Request with id = " + reqId + "not pending to confirm");
+        if (event.getConfirmedRequests() >= event.getParticipantLimit())
+            throw new ForbiddenException("Reached limit to confirmed request to event with id=" + eventId);
         confirmRequestToEvent(request);
-        if(event.getConfirmedRequests()>=event.getParticipantLimit())
+        if (event.getConfirmedRequests() >= event.getParticipantLimit())
             requestRepository.updateAllByEventId(RequestStatus.PENDING, eventId, RequestStatus.REJECTED);
         return mapper.requestToDto(requestRepository.save(request));
     }
 
-    public ParticipationRequestDto reject(Long userId, Long eventId, Long reqId){
+    public ParticipationRequestDto reject(Long userId, Long eventId, Long reqId) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NoEntityException("Event with id = " + eventId + " was not found"));
         if (!event.getInitiator().getId().equals(userId))
@@ -102,9 +102,9 @@ public class RequestServiceImpl implements RequestService {
                     + " not allowed to reject request for event with id =" + eventId);
         Participation request = requestRepository.findById(reqId)
                 .orElseThrow(() -> new NoEntityException("Request with id = " + reqId + " was not found"));
-        if(!request.getEvent().getId().equals(eventId))
-            throw new ForbiddenException("Request with id="+reqId+"not for event with id="+eventId);
-        if(request.getStatus().equals(RequestStatus.CONFIRMED)) cancelConfirmedRequestToEvent(request);
+        if (!request.getEvent().getId().equals(eventId))
+            throw new ForbiddenException("Request with id=" + reqId + "not for event with id=" + eventId);
+        if (request.getStatus().equals(RequestStatus.CONFIRMED)) cancelConfirmedRequestToEvent(request);
         request.setStatus(RequestStatus.REJECTED);
         return mapper.requestToDto(requestRepository.save(request));
     }
@@ -135,11 +135,11 @@ public class RequestServiceImpl implements RequestService {
         request.setStatus(RequestStatus.CONFIRMED);
     }
 
-    private void cancelConfirmedRequestToEvent(Participation request){
+    private void cancelConfirmedRequestToEvent(Participation request) {
         Event event = eventRepository.findById(request.getEvent().getId())
                 .orElseThrow(() -> new NoEntityException("Event with id = " + request.getEvent().getId() +
                         " was not found"));
-        if(event.getConfirmedRequests() != 0) event.setConfirmedRequests(event.getConfirmedRequests() - 1);
+        if (event.getConfirmedRequests() != 0) event.setConfirmedRequests(event.getConfirmedRequests() - 1);
         eventRepository.save(event);
         request.setStatus(RequestStatus.CANCELED);
     }
