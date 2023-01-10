@@ -11,16 +11,16 @@ import java.util.Collection;
 import java.util.List;
 
 public interface StatsRepository extends JpaRepository<Stats, Long> {
-    @Query("select s.app, s.uri, count(s.ip) from Stats s " +
-            "where (:uris is null or s.uri in :uris) " +
-            "and s.timestamp >= :start and s.timestamp < :end " +
+    @Query("select new ru.practicum.ewm.model.dto.ViewStats (s.app, s.uri, count(s.ip)) from Stats s " +
+            "where s.timestamp >= :start and s.timestamp < :end " +
+            "and ((:uris) is null or s.uri in (:uris)) " +
             "group by s.uri, s.app")
     List<ViewStats> searchHit(@Param("uris") Collection<String> uris, @Param("start") LocalDateTime timestamp,
                               @Param("end") LocalDateTime timestamp1);
 
-    @Query("select s.app, s.uri, count(distinct s.ip) from Stats s " +
-            "where (:uris is null or s.uri in :uris) " +
-            "and s.timestamp >= :start and s.timestamp < :end " +
+    @Query("select new ru.practicum.ewm.model.dto.ViewStats (s.app, s.uri, count(distinct s.ip)) from Stats s " +
+            "where s.timestamp >= :start and s.timestamp < :end " +
+            "and ((:uris) is null or s.uri in (:uris)) " +
             "group by s.uri, s.app")
     List<ViewStats> searchHitUnique(@Param("uris") Collection<String> uris, @Param("start") LocalDateTime timestamp,
                               @Param("end") LocalDateTime timestamp1);

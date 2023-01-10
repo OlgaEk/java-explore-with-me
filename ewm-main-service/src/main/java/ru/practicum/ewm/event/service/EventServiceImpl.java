@@ -169,14 +169,15 @@ public class EventServiceImpl implements EventService {
         String start = LocalDateTime.of(1900,1,1,1,1,1)
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String end = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        Map<Long, Event> eventMap =new HashMap<>();
+        events.forEach(e->eventMap.put(e.getId(),e));
         List<String> uris = events.stream()
                 .map(Event::getId)
                 .map(id->"/events/"+id)
                 .collect(Collectors.toList());
         ResponseEntity<Object> response =  statsClient.get(start,end,uris,false);
         List<ViewStats> views = (List<ViewStats>)response.getBody();
-        Map<Long, Event> eventMap =new HashMap<>();
-        events.forEach(e->eventMap.put(e.getId(),e));
+
         for(ViewStats view : views) {
             Long id = Long.parseLong(view.getUri().split("/")[1]);
             Long hits = view.getHits() == null ? 0l:view.getHits();
