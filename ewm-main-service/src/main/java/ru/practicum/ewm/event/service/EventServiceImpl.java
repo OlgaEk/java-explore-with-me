@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.description.method.MethodDescription;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -185,8 +184,8 @@ public class EventServiceImpl implements EventService {
         Gson gson = gsonBuilder.create();
         String responseJson = gson.toJson(response.getBody());
         List<ViewStats> views = gson.fromJson(responseJson,
-                new TypeToken<List<ViewStats>>(){
-        }.getType());
+                new TypeToken<List<ViewStats>>() {
+                }.getType());
 
         for (ViewStats view : views) {
             Long id = Long.parseLong(view.getUri().split("/")[2]);
