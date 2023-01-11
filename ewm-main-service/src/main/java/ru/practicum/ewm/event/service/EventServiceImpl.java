@@ -1,6 +1,10 @@
 package ru.practicum.ewm.event.service;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.description.method.MethodDescription;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -175,10 +179,17 @@ public class EventServiceImpl implements EventService {
                 .map(id -> "/events/" + id)
                 .collect(Collectors.toList());
         ResponseEntity<Object> response = statsClient.get(start, end, uris, false);
-        List<ViewStats> views = (List<ViewStats>) response.getBody();
+
+        //Parse ResponseEntity<Object> to List<ViewStats>
+        GsonBuilder gsonBuilder = new GsonBuilder().serializeNulls().setPrettyPrinting();
+        Gson gson = gsonBuilder.create();
+        String responseJson = gson.toJson(response.getBody());
+        List<ViewStats> views = gson.fromJson(responseJson,
+                new TypeToken<List<ViewStats>>(){
+        }.getType());
 
         for (ViewStats view : views) {
-            Long id = Long.parseLong(view.getUri().split("/")[1]);
+            Long id = Long.parseLong(view.getUri().split("/")[2]);
             Long hits = view.getHits() == null ? 0L : view.getHits();
             eventMap.get(id).setViews(hits);
         }

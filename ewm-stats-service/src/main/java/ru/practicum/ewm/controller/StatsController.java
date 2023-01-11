@@ -34,6 +34,7 @@ public class StatsController {
                                     @RequestParam(name = "uris", required = false) List<String> uris,
                                     @RequestParam(name = "unique", defaultValue = "false") Boolean unique) {
         log.info("try to get statistic (unique = {}) from {}, to {}, by uris = {}.", unique, start, end, uris);
-        return service.get(start, end, uris, unique);
+        List<ViewStats> response = service.get(start, end, uris, unique);
+        return response;
     }
 }
