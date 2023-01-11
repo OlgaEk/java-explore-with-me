@@ -11,6 +11,8 @@ import java.util.Collection;
 import java.util.List;
 
 public interface StatsRepository extends JpaRepository<Stats, Long> {
+
+    //Если не указывать тип dto в query запросе то выдает ошибку, что не может определить, что такое ViewStats
     @Query("select new ru.practicum.ewm.model.dto.ViewStats (s.app, s.uri, count(s.ip)) from Stats s " +
             "where s.timestamp >= :start and s.timestamp < :end " +
             "and ((:uris) is null or s.uri in (:uris)) " +
