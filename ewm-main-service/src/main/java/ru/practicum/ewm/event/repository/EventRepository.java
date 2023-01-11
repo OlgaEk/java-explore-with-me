@@ -15,9 +15,9 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
 
     @Query("select e from Event e " +
-            "where (:users is null or e.initiator.id in :users) " +
-            "and (:states is null or e.state in :states) " +
-            "and (:categories is null or e.category.id in :categories) " +
+            "where ((:users) is null or e.initiator.id in (:users)) " +
+            "and ((:states) is null or e.state in (:states)) " +
+            "and ((:categories) is null or e.category.id in (:categories)) " +
             "and (cast(:start as date) is null or e.eventDate >= :start) " +
             "and (cast(:ends as date) is null or e.eventDate <= :ends) ")
     List<Event> searchEvents(@Param("users") List<Long> ids, @Param("states") List<EventState> states,
@@ -27,7 +27,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     @Query("select e from Event e " +
             "where (:text is null or upper(e.annotation) like upper(concat('%',:text,'%'))) " +
             "and (e.state = :state) " +
-            "and (:categories is null or e.category.id in :categories) " +
+            "and ((:categories) is null or e.category.id in (:categories)) " +
             "and (:paid is null or e.paid = :paid) " +
             "and ( e.eventDate >= :start) " +
             "and (cast(:ends as date) is null or e.eventDate <= :ends) ")
