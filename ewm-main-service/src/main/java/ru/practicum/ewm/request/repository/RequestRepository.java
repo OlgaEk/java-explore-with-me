@@ -20,6 +20,8 @@ public interface RequestRepository extends JpaRepository<Participation, Long> {
 
     List<Participation> findAllByEventId(Long eventId);
 
+    List<Participation> findAllByRequesterIdAndStatus(Long userId, RequestStatus status);
+
     @Transactional
     @Modifying
     @Query("update Participation p set p.status = :status where p.event.id = :eventId and p.status = :statusNew")

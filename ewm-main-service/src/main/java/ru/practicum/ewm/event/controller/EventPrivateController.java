@@ -13,6 +13,8 @@ import ru.practicum.ewm.event.service.EventService;
 import ru.practicum.ewm.event.validator.EventIdExist;
 import ru.practicum.ewm.user.validator.UserIdExist;
 
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @Slf4j
@@ -32,8 +34,10 @@ public class EventPrivateController {
 
     @GetMapping
     public List<EventShortDto> getAllEventsByUser(@PathVariable @UserIdExist Long userId,
-                                                  @RequestParam(name = "from", defaultValue = "0") int from,
-                                                  @RequestParam(name = "size", defaultValue = "10") int size) {
+                                                  @RequestParam(name = "from", defaultValue = "0")
+                                                  @PositiveOrZero int from,
+                                                  @RequestParam(name = "size", defaultValue = "10")
+                                                  @Positive int size) {
         log.info("Try to get events created by user with id = {}. And return a {}, from {}.", userId, size, from);
         PageRequest pageRequest = PageRequest.of(from / size, size);
         return service.getAllByUser(userId, pageRequest);

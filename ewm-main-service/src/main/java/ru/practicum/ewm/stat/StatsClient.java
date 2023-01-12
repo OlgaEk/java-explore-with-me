@@ -29,10 +29,16 @@ public class StatsClient extends HttpClient {
     }
 
     public ResponseEntity<Object> get(String start, String end, List<String> uris, Boolean unique) {
+        StringBuilder uriSB = new StringBuilder();
+        if (uris != null) {
+            uris.forEach(s -> uriSB.append(s).append(","));
+            uriSB.delete(uriSB.length() - ",".length(), uriSB.length());
+        }
+        String uri = uriSB.toString();
         Map<String, Object> parameters = Map.of(
                 "start", start,
                 "end", end,
-                "uris", uris,
+                "uris", uri,
                 "unique", unique
         );
         return get("/stats?start={start}&end={end}&uris={uris}&unique={unique}", parameters);

@@ -1,13 +1,16 @@
 package ru.practicum.ewm.event.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.experimental.FieldDefaults;
 import ru.practicum.ewm.category.model.dto.CategoryDto;
 import ru.practicum.ewm.user.model.dto.UserShortDto;
 
 import java.time.LocalDateTime;
 
 @Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class EventShortDto {
     private String annotation;
     private CategoryDto category;

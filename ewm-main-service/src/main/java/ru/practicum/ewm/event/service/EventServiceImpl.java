@@ -56,6 +56,7 @@ public class EventServiceImpl implements EventService {
                 .orElseThrow(() -> new NoEntityException("Event with id = " + eventId + " was not found"));
         if (!event.getInitiator().getId().equals(userId))
             throw new ForbiddenException("User with id = " + userId + " not allowed to view event with id =" + eventId);
+        setViews(List.of(event));
         return mapper.eventToFullDto(event);
     }
 

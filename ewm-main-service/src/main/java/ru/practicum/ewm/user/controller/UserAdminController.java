@@ -10,6 +10,8 @@ import ru.practicum.ewm.user.model.dto.NewUserRequest;
 import ru.practicum.ewm.user.service.UserService;
 import ru.practicum.ewm.user.validator.UserIdExist;
 
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @Slf4j
@@ -28,8 +30,8 @@ public class UserAdminController {
 
     @GetMapping
     public List<User> getUsers(@RequestParam(name = "ids", required = false) List<Long> ids,
-                               @RequestParam(name = "from", defaultValue = "0") int from,
-                               @RequestParam(name = "size", defaultValue = "10") int size) {
+                               @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero int from,
+                               @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
         log.info("Try to get users. Users ids : {}. And return a {} users from {}.", ids, size, from);
         PageRequest pageRequest = PageRequest.of(from / size, size);
         return service.get(ids, pageRequest);

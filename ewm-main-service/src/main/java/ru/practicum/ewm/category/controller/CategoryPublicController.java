@@ -9,6 +9,8 @@ import ru.practicum.ewm.category.model.Category;
 import ru.practicum.ewm.category.service.CategoryService;
 import ru.practicum.ewm.category.validator.CategoryIdExist;
 
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @Slf4j
@@ -20,8 +22,8 @@ public class CategoryPublicController {
     private final CategoryService service;
 
     @GetMapping
-    List<Category> getCategories(@RequestParam(name = "from", defaultValue = "0") int from,
-                                 @RequestParam(name = "size", defaultValue = "10") int size) {
+    List<Category> getCategories(@RequestParam(name = "from", defaultValue = "0") @PositiveOrZero int from,
+                                 @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
         log.info("Try to get {} categories from {}", size, from);
         PageRequest pageRequest = PageRequest.of(from / size, size);
         return service.getAll(pageRequest);
