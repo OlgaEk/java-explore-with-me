@@ -12,10 +12,10 @@ import javax.validation.constraints.Size;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CategoryUpdateInput {
     @CategoryIdExist
-    private Long id;
+    Long id;
 
     @NotBlank
     @Size(max = 512)
-    private String name;
+    String name;
 
 }

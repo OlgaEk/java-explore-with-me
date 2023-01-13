@@ -7,6 +7,6 @@ import lombok.experimental.FieldDefaults;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CategoryDto {
-    private Long id;
-    private String name;
+    Long id;
+    String name;
 }

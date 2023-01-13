@@ -12,5 +12,5 @@ import javax.validation.constraints.Size;
 public class CategoryInput {
     @NotBlank
     @Size(max = 512)
-    private String name;
+    String name;
 }

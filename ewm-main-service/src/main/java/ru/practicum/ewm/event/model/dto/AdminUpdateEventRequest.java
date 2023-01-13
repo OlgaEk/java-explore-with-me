@@ -10,16 +10,16 @@ import java.time.LocalDateTime;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AdminUpdateEventRequest {
-    private String annotation;
-    private Long category;
-    private String description;
+    String annotation;
+    Long category;
+    String description;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime eventDate;
-    private Location location;
-    private Boolean paid;
-    private Integer participantLimit;
-    private Boolean requestModeration;
-    private String title;
+    LocalDateTime eventDate;
+    Location location;
+    Boolean paid;
+    Integer participantLimit;
+    Boolean requestModeration;
+    String title;
 
 
 }

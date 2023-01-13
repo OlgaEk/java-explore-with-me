@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static ru.practicum.ewm.constant.Constant.DEFAULT_DATE_FORMAT;
+
 @Data
 @Builder
 public class ErrorResponse {
@@ -16,6 +18,6 @@ public class ErrorResponse {
     private String reason;
     private HttpStatus status;
     @Builder.Default
-    private String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    private String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT));
 
 }

@@ -11,10 +11,10 @@ import java.time.LocalDateTime;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ParticipationRequestDto {
-    private Long id;
+    Long id;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime created;
-    private Long event;
-    private Long requester;
-    private RequestStatus status;
+    LocalDateTime created;
+    Long event;
+    Long requester;
+    RequestStatus status;
 }

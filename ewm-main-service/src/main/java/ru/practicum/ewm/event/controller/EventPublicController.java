@@ -18,6 +18,8 @@ import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static ru.practicum.ewm.constant.Constant.DEFAULT_DATE_FORMAT;
+
 @Slf4j
 @Validated
 @RestController
@@ -31,9 +33,9 @@ public class EventPublicController {
                                                   @RequestParam(name = "categories", required = false) List<Long> categories,
                                                   @RequestParam(name = "paid", required = false) Boolean paid,
                                                   @RequestParam(name = "rangeStart", required = false)
-                                                  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime rangeStart,
+                                                  @DateTimeFormat(pattern = DEFAULT_DATE_FORMAT) LocalDateTime rangeStart,
                                                   @RequestParam(name = "rangeEnd", required = false)
-                                                  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime rangeEnd,
+                                                  @DateTimeFormat(pattern = DEFAULT_DATE_FORMAT) LocalDateTime rangeEnd,
                                                   @RequestParam(name = "onlyAvailable", defaultValue = "false") Boolean onlyAvailable,
                                                   @RequestParam(name = "sort", required = false) SortEvents sort,
                                                   @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero int from,

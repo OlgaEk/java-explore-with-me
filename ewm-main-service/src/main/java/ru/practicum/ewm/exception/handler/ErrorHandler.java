@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -12,6 +13,7 @@ import ru.practicum.ewm.exception.ForbiddenException;
 import ru.practicum.ewm.exception.NoEntityException;
 
 import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 import java.util.List;
 
 @Slf4j
@@ -57,6 +59,19 @@ public class ErrorHandler {
 
     }
 
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleMissingServletRequestParameterException(
+            MissingServletRequestParameterException e) {
+        log.error("Input data  is not valid. Error:{}", e.getLocalizedMessage());
+        return ErrorResponse.builder()
+                .errors(List.of(e.getClass().getName()))
+                .status(HttpStatus.BAD_REQUEST)
+                .reason("For the requested operation the conditions are not met.")
+                .message(e.getLocalizedMessage())
+                .build();
+    }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNoEntityException(final NoEntityException e) {
@@ -66,6 +81,18 @@ public class ErrorHandler {
                 .status(HttpStatus.NOT_FOUND)
                 .reason("The required object was not found.")
                 .message(e.getLocalizedMessage())
+                .build();
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleValidationException(final ValidationException e) {
+        log.error("Entity not found. Error:{}", e.getCause().getLocalizedMessage());
+        return ErrorResponse.builder()
+                .errors(List.of(e.getCause().getClass().getName()))
+                .status(HttpStatus.NOT_FOUND)
+                .reason("The required object was not found.")
+                .message(e.getCause().getLocalizedMessage())
                 .build();
     }
 
@@ -80,20 +107,18 @@ public class ErrorHandler {
                 .message(e.getLocalizedMessage())
                 .build();
     }
-//При обработке в handler Throwable ошибок , все кастомные валидаторы начинают выдавать 500 ошибку
-// Оказывается если в кастомном валидаторе пробросить исключение, то в дальнейшем это вызовет еще одно
-// исключение обработчика валидаторов(то что валидатор завершился не по плану). И он, как я понимаю в стеке
-// исключений становится последним и handler обрабатывает его, как Throwable.
-// Пока, если 500 ошибка необходима, то я исключу все кастомные валидаторы(((
-    /*@ExceptionHandler
+
+
+    @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleInternalError (final Throwable e, WebRequest request){
-        log.error("Server error");
+    public ErrorResponse handleInternalError(final Throwable e, WebRequest request) {
+        log.error("Server error. Error:{},Reason:{}", e.getClass().getName(), request.getDescription(false));
+        e.printStackTrace();
         return ErrorResponse.builder()
                 .errors(List.of(e.getClass().getName()))
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .reason("Error occurred : " + request.getDescription(false) )
+                .reason("Error occurred : " + request.getDescription(false))
                 .message(e.getLocalizedMessage())
                 .build();
-    }*/
+    }
 }

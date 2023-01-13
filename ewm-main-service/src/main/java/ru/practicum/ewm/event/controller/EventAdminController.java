@@ -17,6 +17,8 @@ import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static ru.practicum.ewm.constant.Constant.DEFAULT_DATE_FORMAT;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -30,9 +32,9 @@ public class EventAdminController {
                                               @RequestParam(name = "states", required = false) List<EventState> states,
                                               @RequestParam(name = "categories", required = false) List<Long> categories,
                                               @RequestParam(name = "rangeStart", required = false)
-                                              @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime rangeStart,
+                                              @DateTimeFormat(pattern = DEFAULT_DATE_FORMAT) LocalDateTime rangeStart,
                                               @RequestParam(name = "rangeEnd", required = false)
-                                              @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime rangeEnd,
+                                              @DateTimeFormat(pattern = DEFAULT_DATE_FORMAT) LocalDateTime rangeEnd,
                                               @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero int from,
                                               @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
         if (users != null && users.size() == 1 && users.get(0) == 0) users = null;

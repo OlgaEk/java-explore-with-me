@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static ru.practicum.ewm.constant.Constant.DEFAULT_DATE_FORMAT;
+
 @Service
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
@@ -164,14 +166,14 @@ public class EventServiceImpl implements EventService {
         endpointHit.setIp(request.getRemoteAddr());
         endpointHit.setUri(request.getRequestURI());
         endpointHit.setApp("ewm-main-service");
-        endpointHit.setTimestamp(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        endpointHit.setTimestamp(LocalDateTime.now().format(DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT)));
         statsClient.hit(endpointHit);
     }
 
     private void setViews(List<Event> events) {
         String start = LocalDateTime.of(1900, 1, 1, 1, 1, 1)
-                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        String end = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                .format(DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT));
+        String end = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT));
         Map<Long, Event> eventMap = new HashMap<>();
         events.forEach(e -> eventMap.put(e.getId(), e));
         List<String> uris = events.stream()

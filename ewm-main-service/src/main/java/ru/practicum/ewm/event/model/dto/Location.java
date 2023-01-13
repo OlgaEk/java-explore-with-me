@@ -7,6 +7,6 @@ import lombok.experimental.FieldDefaults;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Location {
-    private Float lat;
-    private Float lon;
+    Float lat;
+    Float lon;
 }

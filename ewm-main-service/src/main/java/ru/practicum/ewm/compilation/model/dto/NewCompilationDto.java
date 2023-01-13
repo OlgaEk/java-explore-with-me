@@ -11,9 +11,9 @@ import java.util.List;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class NewCompilationDto {
-    private List<Long> events;
-    private Boolean pinned;
+    List<Long> events;
+    Boolean pinned;
     @NotBlank
     @Size(min = 3, max = 120)
-    private String title;
+    String title;
 }

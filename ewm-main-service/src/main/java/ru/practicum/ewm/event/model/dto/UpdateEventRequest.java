@@ -16,19 +16,19 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UpdateEventRequest {
     @Size(min = 20, max = 2000)
-    private String annotation;
+    String annotation;
     @CategoryIdNullOrExist
-    private Long category;
+    Long category;
     @Size(min = 20, max = 7000)
-    private String description;
+    String description;
     @EventDateInFuture
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime eventDate;
+    LocalDateTime eventDate;
     @EventIdExist
-    private Long eventId;
-    private Boolean paid;
+    Long eventId;
+    Boolean paid;
     @PositiveOrZero
-    private Integer participantLimit;
+    Integer participantLimit;
     @Size(min = 3, max = 120)
-    private String title;
+    String title;
 }
