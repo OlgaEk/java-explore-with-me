@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.ewm.event.model.Event;
 import ru.practicum.ewm.request.model.Participation;
 import ru.practicum.ewm.request.model.RequestStatus;
 
@@ -28,4 +29,13 @@ public interface RequestRepository extends JpaRepository<Participation, Long> {
     int updateAllByEventId(@Param("status") RequestStatus status,
                            @Param("eventId") Long eventId,
                            @Param("statusNew") RequestStatus statusNew);
+
+
+
+
+    @Query("select distinct(p.event) from Participation p " +
+            "where ((:ids) is null or p.requester.id in (:ids)) " +
+            "and p.status = :status")
+    List<Event> findAllEventsByRequesterInIdsAndStatus(@Param("ids") List<Long> friends,
+                                                       @Param("status") RequestStatus confirmed);
 }

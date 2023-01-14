@@ -1,25 +1,28 @@
-package ru.practicum.ewm.model;
+package ru.practicum.ewm.subscription.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import ru.practicum.ewm.user.model.User;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "stats")
-public class Stats {
+@Table(name = "subscription")
+public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String app;
-    private String uri;
-    private String ip;
-    private LocalDateTime timestamp;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+    @ManyToOne
+    @JoinColumn(name = "friend_id", nullable = false)
+    private User friend;
+    @Enumerated(EnumType.STRING)
+    private SubStatus status;
 
     @Override
     public int hashCode() {
@@ -34,7 +37,7 @@ public class Stats {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Stats other = (Stats) obj;
+        Subscription other = (Subscription) obj;
         if (id == null) {
             return false;
         } else if (!id.equals(other.id))

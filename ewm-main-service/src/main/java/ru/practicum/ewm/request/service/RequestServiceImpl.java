@@ -2,6 +2,7 @@ package ru.practicum.ewm.request.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.event.model.Event;
 import ru.practicum.ewm.event.model.EventState;
 import ru.practicum.ewm.event.repository.EventRepository;
@@ -20,6 +21,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class RequestServiceImpl implements RequestService {
     private final RequestRepository requestRepository;
     private final RequestMapper mapper;
@@ -27,6 +29,7 @@ public class RequestServiceImpl implements RequestService {
     private final UserRepository userRepository;
 
 
+    @Transactional
     public ParticipationRequestDto create(Long userId, Long eventId) {
         if (requestRepository.findByEventIdAndRequesterId(eventId, userId).isPresent())
             throw new ForbiddenException("User with id = " + userId
@@ -52,6 +55,7 @@ public class RequestServiceImpl implements RequestService {
         return mapper.requestToDto(requestRepository.findAllByRequesterId(userId));
     }
 
+    @Transactional
     public ParticipationRequestDto cancel(Long userId, Long requestId) {
         Participation request = requestRepository.findById(requestId)
                 .orElseThrow(() -> new NoEntityException("Request with id = " + requestId + " was not found"));
@@ -72,6 +76,7 @@ public class RequestServiceImpl implements RequestService {
         return mapper.requestToDto(requestRepository.findAllByEventId(eventId));
     }
 
+    @Transactional
     public ParticipationRequestDto confirm(Long userId, Long eventId, Long reqId) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NoEntityException("Event with id = " + eventId + " was not found"));
@@ -94,6 +99,7 @@ public class RequestServiceImpl implements RequestService {
         return mapper.requestToDto(requestRepository.save(request));
     }
 
+    @Transactional
     public ParticipationRequestDto reject(Long userId, Long eventId, Long reqId) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NoEntityException("Event with id = " + eventId + " was not found"));

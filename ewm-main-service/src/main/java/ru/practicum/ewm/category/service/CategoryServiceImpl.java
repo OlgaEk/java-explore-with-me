@@ -3,6 +3,7 @@ package ru.practicum.ewm.category.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.category.model.Category;
 import ru.practicum.ewm.category.model.dto.CategoryInput;
 import ru.practicum.ewm.category.model.dto.CategoryUpdateInput;
@@ -14,18 +15,22 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository repository;
     private final CategoryMapper mapper;
 
+    @Transactional
     public Category create(CategoryInput categoryInput) {
         return repository.save(mapper.inputToCategory(categoryInput));
     }
 
+    @Transactional
     public Category update(CategoryUpdateInput category) {
         return repository.save(mapper.updateInputToCategory(category));
     }
 
+    @Transactional
     public void delete(Long catId) {
         //Поиск событий привязанных к категории
         Category category = repository.findById(catId)

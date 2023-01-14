@@ -2,6 +2,7 @@ package ru.practicum.ewm.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.model.dto.EndpointHit;
 import ru.practicum.ewm.model.dto.ViewStats;
 import ru.practicum.ewm.model.mapper.StatsMapper;
@@ -12,10 +13,12 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class StatsServiceImpl implements StatsService {
     private final StatsRepository repository;
     private final StatsMapper mapper;
 
+    @Transactional
     public void create(EndpointHit hitDto) {
         repository.save(mapper.dtoToStats(hitDto));
     }
