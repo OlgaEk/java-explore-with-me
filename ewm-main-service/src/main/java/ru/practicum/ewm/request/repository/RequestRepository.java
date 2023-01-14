@@ -31,8 +31,6 @@ public interface RequestRepository extends JpaRepository<Participation, Long> {
                            @Param("statusNew") RequestStatus statusNew);
 
 
-
-
     @Query("select distinct(p.event) from Participation p " +
             "where ((:ids) is null or p.requester.id in (:ids)) " +
             "and p.status = :status")

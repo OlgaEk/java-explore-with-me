@@ -8,7 +8,6 @@ import ru.practicum.ewm.event.model.dto.EventShortDto;
 import ru.practicum.ewm.event.model.mapper.EventMapper;
 import ru.practicum.ewm.exception.ForbiddenException;
 import ru.practicum.ewm.exception.NoEntityException;
-import ru.practicum.ewm.request.model.Participation;
 import ru.practicum.ewm.request.model.RequestStatus;
 import ru.practicum.ewm.request.repository.RequestRepository;
 import ru.practicum.ewm.subscription.model.SubStatus;
@@ -17,9 +16,7 @@ import ru.practicum.ewm.subscription.repository.SubRepository;
 import ru.practicum.ewm.user.model.User;
 import ru.practicum.ewm.user.repository.UserRepository;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -60,10 +57,6 @@ public class SubServiceImpl implements SubService {
 
 
     public String status(Long userId, Long friendId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NoEntityException("User with id = " + userId + " was not found"));
-        User friend = userRepository.findById(userId)
-                .orElseThrow(() -> new NoEntityException("User with id = " + userId + " was not found"));
         Subscription sub = subRepository.findByUserIdAndFriendId(userId, friendId)
                 .orElseThrow(() -> new ForbiddenException("User with id =" + userId + "is not have request " +
                         "to friendship to user with id=" + friendId));
@@ -71,26 +64,9 @@ public class SubServiceImpl implements SubService {
     }
 
     public List<EventShortDto> getFriendEvent(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NoEntityException("User with id = " + userId + " was not found"));
         List<Long> friends = subRepository.findAllUserIdByUserIdAndStatus(userId, SubStatus.CONFIRMED);
-        List<Event> events = requestRepository.findAllEventsByRequesterInIdsAndStatus(friends,RequestStatus.CONFIRMED);
-       /* List<Subscription> subConfirm = subRepository.findAllByUserIdAndStatus(userId, SubStatus.CONFIRMED);
-        List<Long> friends = subConfirm.stream()
-                .map(Subscription::getFriend)
-                .map(User::getId)
-                .collect(Collectors.toList());
-        // https://javarush.com/groups/posts/2203-stream-api преобразование из List<Participation> в Participation
-        List<Participation> requests = friends.stream()
-                .map(i -> requestRepository.findAllByRequesterIdAndStatus(i, RequestStatus.CONFIRMED))
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
-        List<Event> events = requests.stream()
-                .map(Participation::getEvent).distinct()
-                .collect(Collectors.toList());*/
-
+        List<Event> events = requestRepository.findAllEventsByRequesterInIdsAndStatus(friends, RequestStatus.CONFIRMED);
         return eventMapper.eventToShortDto(events);
-
 
     }
 
