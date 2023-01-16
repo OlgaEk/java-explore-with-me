@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.event.model.Event;
 import ru.practicum.ewm.request.model.Participation;
 import ru.practicum.ewm.request.model.RequestStatus;
+import ru.practicum.ewm.subscription.model.SubStatus;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,4 +37,11 @@ public interface RequestRepository extends JpaRepository<Participation, Long> {
             "and p.status = :status")
     List<Event> findAllEventsByRequesterInIdsAndStatus(@Param("ids") List<Long> friends,
                                                        @Param("status") RequestStatus confirmed);
+
+    @Query("select distinct(p.event) from Participation p " +
+            "where p.requester.id " +
+            "in (select s.friend.id from Subscription s where s.user.id = :id and s.status = :status) " +
+            "and p.status = :statusEv")
+    List<Event> findAllEventsByUserIDIdsAndStatus(@Param("statusEv") RequestStatus confirmed,
+                                                  @Param("id") Long id, @Param("status") SubStatus status);
 }

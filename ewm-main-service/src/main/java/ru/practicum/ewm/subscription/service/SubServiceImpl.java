@@ -64,9 +64,10 @@ public class SubServiceImpl implements SubService {
     }
 
     public List<EventShortDto> getFriendEvent(Long userId) {
-        List<Long> friends = subRepository.findAllUserIdByUserIdAndStatus(userId, SubStatus.CONFIRMED);
-        List<Event> events = requestRepository.findAllEventsByRequesterInIdsAndStatus(friends, RequestStatus.CONFIRMED);
+        List<Event> events = requestRepository.findAllEventsByUserIDIdsAndStatus(RequestStatus.CONFIRMED, userId,
+                SubStatus.CONFIRMED);
         return eventMapper.eventToShortDto(events);
+
 
     }
 
