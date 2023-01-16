@@ -3,6 +3,7 @@ package ru.practicum.ewm.compilation.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.compilation.model.Compilation;
 import ru.practicum.ewm.compilation.model.dto.CompilationDto;
 import ru.practicum.ewm.compilation.model.dto.NewCompilationDto;
@@ -17,15 +18,18 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CompilationServiceImpl implements CompilationService {
     private final CompilationRepository compilationRepository;
     private final CompilationMapper mapper;
     private final EventRepository eventRepository;
 
+    @Transactional
     public CompilationDto create(NewCompilationDto compDto) {
         return mapper.compilationToDto(compilationRepository.save(mapper.dtoToCompilation(compDto)));
     }
 
+    @Transactional
     public void delete(Long compId) {
         Compilation comp = compilationRepository.findById(compId)
                 .orElseThrow(() -> new NoEntityException("Event with id = " + compId + " is not found"));
@@ -42,6 +46,7 @@ public class CompilationServiceImpl implements CompilationService {
         return mapper.compilationToDto(comp);
     }
 
+    @Transactional
     public void addEvent(Long compId, Long eventId) {
         Compilation comp = compilationRepository.findById(compId)
                 .orElseThrow(() -> new NoEntityException("Event with id = " + compId + " is not found"));
@@ -55,6 +60,7 @@ public class CompilationServiceImpl implements CompilationService {
         compilationRepository.save(comp);
     }
 
+    @Transactional
     public void deleteEvent(Long compId, Long eventId) {
         Compilation comp = compilationRepository.findById(compId)
                 .orElseThrow(() -> new NoEntityException("Event with id = " + compId + " is not found"));
@@ -68,6 +74,7 @@ public class CompilationServiceImpl implements CompilationService {
         compilationRepository.save(comp);
     }
 
+    @Transactional
     public void pin(Long compId, Boolean pinned) {
         Compilation comp = compilationRepository.findById(compId)
                 .orElseThrow(() -> new NoEntityException("Event with id = " + compId + " is not found"));

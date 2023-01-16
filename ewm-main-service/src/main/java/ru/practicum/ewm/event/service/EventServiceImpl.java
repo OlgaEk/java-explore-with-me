@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.event.controller.SortEvents;
 import ru.practicum.ewm.event.model.Event;
 import ru.practicum.ewm.event.model.EventState;
@@ -33,6 +34,7 @@ import static ru.practicum.ewm.constant.Constant.DEFAULT_DATE_FORMAT;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
@@ -40,6 +42,7 @@ public class EventServiceImpl implements EventService {
 
     private final StatsClient statsClient;
 
+    @Transactional
     public EventFullDto create(NewEventDto eventDto, Long userId) {
         Event event = mapper.fullDtoToEvent(eventDto);
         event.setState(EventState.PENDING);
@@ -62,6 +65,7 @@ public class EventServiceImpl implements EventService {
         return mapper.eventToFullDto(event);
     }
 
+    @Transactional
     public EventFullDto updateByUser(Long userId, UpdateEventRequest eventDto) {
         Event event = eventRepository.findById(eventDto.getEventId())
                 .orElseThrow(() -> new NoEntityException("Event with id = " + eventDto.getEventId() + " was not found"));
@@ -80,6 +84,7 @@ public class EventServiceImpl implements EventService {
         return mapper.eventToFullDto(eventRepository.save(event));
     }
 
+    @Transactional
     public EventFullDto cancelByUser(Long userId, Long eventId) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NoEntityException("Event with id = " + eventId + " was not found"));
@@ -99,6 +104,7 @@ public class EventServiceImpl implements EventService {
 
     }
 
+    @Transactional
     public EventFullDto updateByAdmin(Long eventId, AdminUpdateEventRequest eventDto) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NoEntityException("Event with id = " + eventId + " was not found"));
@@ -106,6 +112,7 @@ public class EventServiceImpl implements EventService {
         return mapper.eventToFullDto(eventRepository.save(event));
     }
 
+    @Transactional
     public EventFullDto publish(Long eventId) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NoEntityException("Event with id = " + eventId + " was not found"));
@@ -119,6 +126,7 @@ public class EventServiceImpl implements EventService {
         return mapper.eventToFullDto(eventRepository.save(event));
     }
 
+    @Transactional
     public EventFullDto reject(Long eventId) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NoEntityException("Event with id = " + eventId + " was not found"));
